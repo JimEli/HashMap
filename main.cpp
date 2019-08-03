@@ -8,11 +8,13 @@
 
 using namespace std;
 
-struct MyKeyHash { unsigned long operator()(const int& k) const { return k % 10; } };
+constexpr int TABLESIZE{ 10 };
+
+struct MyKeyHash { unsigned long operator()(const int& k) const { return k % TABLESIZE; } };
 
 int main() 
 {
-	HashMap<int, string, 10, MyKeyHash> hmap;
+	HashMap<int, string, TABLESIZE, MyKeyHash> hmap;
 	string value;
 
 	hmap.put(1, "1");
