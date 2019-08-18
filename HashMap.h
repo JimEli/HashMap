@@ -1,8 +1,5 @@
 // HashMap.h
 
-#include <cstddef>
-
-// Default hash function class.
 template <typename K, size_t tableSize>
 struct KeyHash
 {
@@ -12,7 +9,6 @@ struct KeyHash
 	}
 };
 
-// Hash map class template
 template <typename K, typename V, size_t tableSize, typename F = KeyHash<K, tableSize> >
 class HashMap 
 {
