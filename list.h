@@ -1,3 +1,4 @@
+// Very basic linked-list.
 #ifndef LIST_H
 #define LIST_H
 
@@ -12,17 +13,17 @@ private:
 
 		void reset() { next = prev = this; }
 
-		bool in_list() const { return this != next; }
+		bool inList() const { return this != next; }
 
-		void link_before(node* nextNode) {
+		void linkPrior(node* nextNode) {
 			prev = nextNode->prev;
 			prev->next = this;
 			nextNode->prev = this;
 			next = nextNode;
 		}
 
-		void unlink() {
-			assert(in_list());
+		void unLink() {
+			assert(inList());
 			prev->next = next;
 			next->prev = prev;
 			next = prev = this;
@@ -71,20 +72,19 @@ public:
 	template<typename ...Args>
 	void emplace_back(Args&&... args) {
 		node* newNode = new node(T(std::forward<Args>(args)...)); //constructpNode(T(std::forward<Args>(args)...));
-		newNode->link_before(&root);
+		newNode->linkPrior(&root);
 	}
 
 	iterator erase(iterator it) {
-		assert(it.node()->in_list());
+		assert(it.node()->inList());
 		iterator itErase(it);
 		++it;
-		itErase.node()->unlink();
+		itErase.node()->unLink();
 		delete itErase.node();
-
 		return it;
 	}
 
-	bool empty() const { return !root.in_list(); }
+	bool empty() const { return !root.inList(); }
 
 	void clear() {
 		node* it = root.next;
