@@ -1,4 +1,4 @@
-// Hash map with seperate chaining.
+// Hash map with separate chaining.
 #include <iostream>
 #include <string>
 #include "HashTable.h"
