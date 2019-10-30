@@ -2,8 +2,6 @@
 ## C++ Basic hash map
 ### Implemented with separate chaining via linked-list
 
-Uses my simplified versions of pair and list, but will work with STL also.
-
 A hash table, or hash map, is a data structure that implements an associative array abstract data type, a structure that can map keys to values. A hash table uses a hash function to compute an index into an array of buckets or slots, from which the desired value can be found.
 
 Ideally, the hash function will assign each key to a unique bucket, but most hash table designs employ an imperfect hash function, which might cause hash collisions where the hash function generates the same index for more than one key. Such collisions must be accommodated in some way.
@@ -18,3 +16,5 @@ The cost of a table operation is that of scanning the entries of the selected bu
 For separate-chaining, the worst-case scenario is when all entries are inserted into the same bucket, in which case the hash table is ineffective and the cost is that of searching the bucket data structure. If the latter is a linear list, the lookup procedure may have to scan all its entries, so the worst-case cost is proportional to the number n of entries in the table.
 
 Chained hash tables also inherit the disadvantages of linked lists. When storing small keys and values, the space overhead of the next pointer in each entry record can be significant. An additional disadvantage is that traversing a linked list has poor cache performance, making the processor cache ineffective.
+
+* Note: Uses my simplified versions of list and pair, but will work with STL also.
