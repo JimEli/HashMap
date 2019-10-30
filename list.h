@@ -1,110 +1,201 @@
-// Very basic linked-list.
 #ifndef LIST_H
 #define LIST_H
 
-#include <cassert>
+#include <iostream>  // cout
 
-template<typename T>
-class list {
-private:
-	struct node {
-		node() { }
-		explicit node(const T& v) : value(v) { }
+template <typename T>
+class list
+{
+	struct node
+	{
+		explicit node(T e) : next(nullptr) { element = e; }
 
-		void reset() { next = prev = this; }
+		T element;
+		node* next;
 
-		bool inList() const { return this != next; }
-
-		void linkPrior(node* nextNode) {
-			prev = nextNode->prev;
-			prev->next = this;
-			nextNode->prev = this;
-			next = nextNode;
-		}
-
-		void unLink() {
-			assert(inList());
-			prev->next = next;
-			next->prev = prev;
-			next = prev = this;
-		}
-
-		node *next, *prev;
-		T value;
+		template <typename T> friend class list;
 	};
 
-	node root;
-
-	template<typename TNodePtr, typename TPtr, typename TRef>
-	struct node_iterator {
-		explicit node_iterator(TNodePtr node) : pNode(node) { }
-
-		TRef operator* () const {
-			assert(pNode != nullptr);
-			return pNode->value;
-		}
-		TPtr operator-> () const { return &pNode->value; }
-
-		TNodePtr node() const { return pNode; }
-
-		node_iterator& operator++ () {
-			pNode = pNode->next;
-			return *this;
-		}
-
-		bool operator== (const node_iterator& rhs) const { return rhs.pNode == pNode; }
-		bool operator!= (const node_iterator& rhs) const { return !(rhs == *this); }
-
-	private:
-		TNodePtr pNode;
-	};
+	node *head, *tail;
 
 public:
-	typedef node_iterator<node*, T*, T&> iterator;
-	typedef node_iterator<const node*, const T*, const T&> const_iterator;
+	list() : head(nullptr), tail(nullptr) { }
 
-	explicit list() { root.reset(); }
 	~list() { clear(); }
 
-	iterator begin() { return iterator(root.next); }
-	iterator end() { return iterator(&root); }
+	void clear()
+	{
+		while (!empty())
+			pop_front();
 
-	template<typename ...Args>
-	void emplace_back(Args&&... args) {
-		node* newNode = new node(T(std::forward<Args>(args)...)); //constructpNode(T(std::forward<Args>(args)...));
-		newNode->linkPrior(&root);
+		head = tail = nullptr;
 	}
 
-	iterator erase(iterator it) {
-		assert(it.node()->inList());
-		iterator itErase(it);
-		++it;
-		itErase.node()->unLink();
-		delete itErase.node();
-		return it;
-	}
-
-	bool empty() const { return !root.inList(); }
-
-	void clear() {
-		node* it = root.next;
-		while (it != &root) {
-			node* nextIt = it->next;
-			delete it;
-			it = nextIt;
-		}
-		root.reset();
-	}
-
-	std::size_t size() const {
-		const node* it = root.next;
+	std::size_t size() const
+	{
 		std::size_t size = 0;
-		while (it != &root) {
-			++size;
-			it = it->next;
-		}
+		for (const node *node = head; node; node = node->next, size++);
 		return size;
 	}
+
+	bool empty() const { return head == nullptr; }
+
+	T& front() const
+	{
+		if (!empty())
+			return head->element;
+		else
+			throw std::out_of_range("empty list");
+	}
+
+	T& back() const
+	{
+		if (!empty())
+			return tail->element;
+		else
+			throw std::out_of_range("empty list");
+	}
+
+	void push_back(const T& e)
+	{
+		node *newNode = new node(e);
+
+		if (!head)
+			head = newNode;
+
+		if (tail)
+			tail->next = newNode;
+
+		tail = newNode;
+	}
+
+	void push_front(const T& e)
+	{
+		node *newNode = new node(e);
+
+		if (!tail)
+			tail = newNode;
+
+		newNode->next = head;
+		head = newNode;
+	}
+
+	void pop_front()
+	{
+		if (empty())
+			return;
+
+		node *temp = head;
+
+		head = head->next;
+
+		if (tail == temp)
+			tail = nullptr;
+
+		delete temp;
+	}
+
+	bool find(T d) const
+	{
+		node *curr = head;
+		while (curr != nullptr)
+		{
+			if (curr->element == d)
+				return true;
+			curr = curr->next;
+		}
+		return false;
+	}
+
+	bool remove(T d)
+	{
+		node *prev = head;
+		node *curr = head;
+
+		while (curr != nullptr)
+		{
+			if (curr->element == d)
+				break;
+			else
+			{
+				prev = curr;
+				curr = curr->next;
+			}
+		}
+
+		if (curr == nullptr)
+			return false;
+
+		else
+		{
+			if (head == curr)
+				head = curr->next;
+
+			if (tail == curr)
+				tail = prev;
+
+			prev->next = curr->next;
+
+			delete curr;
+		}
+
+		return true;
+	}
+
+	void reverse()
+	{
+		node *prev = nullptr, *curr = head, *next = nullptr;
+
+		while (curr != nullptr)
+		{
+			next = curr->next;
+			curr->next = prev;
+			prev = curr;
+			curr = next;
+		}
+
+		std::swap(head, tail);
+	}
+
+	friend std::ostream& operator<< (std::ostream& os, const list<T>& list)
+	{
+		for (const node *node = list.head; node; node = node->next)
+			os << node->element;
+
+		return os << std::endl;
+	}
+
+	// Inner iterator class. Member typedefs provided through inheritance from std::iterator.
+	class iterator : public std::iterator<std::forward_iterator_tag, T>
+	{
+	private:
+		node *pnode = nullptr;
+
+		// Ctor is private, so only friends can create instances.
+		iterator(node *n) : pnode(n) { }
+
+		friend class list;
+
+	public:
+		// Overload comparison operators.
+		bool operator== (const iterator& it) const { return pnode == it.pnode; }
+		bool operator!= (const iterator& it) const { return pnode != it.pnode; }
+
+		// Overload dereference and pointer operators.
+		T& operator* () { return pnode->element; }
+		T* operator-> () { return &pnode->element; }
+
+		// Overload prefix increment operator.
+		iterator& operator++ ()
+		{
+			pnode = pnode->next;
+			return *this;
+		}
+	}; // End iterator inner class.
+
+	// Begin and end iterators.
+	iterator begin() const { return iterator(head); }
+	iterator end() const { return iterator(tail); }
 };
 
 #endif // LIST_H
