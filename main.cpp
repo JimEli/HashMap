@@ -1,4 +1,4 @@
-// hash map with seperate chaining.
+// Hash map with seperate chaining.
 #include <iostream>
 #include <string>
 #include "HashTable.h"
@@ -14,14 +14,14 @@ int main()
 
     HashTable<std::string> *hashTable = new HashTable<std::string>();
 
-	cout << (hashTable->isEmpty() ? "Hash table is empty" : "Hash table is not empty") << "\n";
+    cout << (hashTable->isEmpty() ? "Hash table is empty" : "Hash table is not empty") << "\n";
 
-    // Adding a data then check if hash table is empty
+    // Adding a data then check if hash table is empty.
     cout << "Adding data" << endl;
     hashTable->insert(434, "Dylan");
-	cout << (hashTable->isEmpty() ? "Hash table is empty" : "Hash table is not empty") << "\n";
+    cout << (hashTable->isEmpty() ? "Hash table is empty" : "Hash table is not empty") << "\n";
 
-    // Adding others data
+    // Adding other data.
     hashTable->insert(391, "Dominic");
     hashTable->insert(806, "Adam");
     hashTable->insert(117, "Lindsey");
@@ -32,7 +32,7 @@ int main()
     hashTable->insert(953, "Frankie");
     hashTable->insert(895, "Vanessa");
 
-    // Search key 669, it should be found
+    // Search key 669, it should be found.
     int key = 669;
     cout << "Search value for key " << key << endl;
     string name = hashTable->search(key);
@@ -41,11 +41,11 @@ int main()
     else
         cout << "Value for key " << key << " is not found\n";
 
-    // Remove key 669 then search the key,  it should not be found
+    // Remove key 669 then search the key,  it should not be found.
     cout << "Remove node of key " << key << endl;
 	hashTable->remove(key);
 	name = hashTable->search(key);
-    if(name != "")
+    if (name != "")
         cout << "Value for key " << key << " is " << name << endl;
     else
         cout << "Value for key " << key << " is not found\n";
