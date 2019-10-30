@@ -17,4 +17,6 @@ For separate-chaining, the worst-case scenario is when all entries are inserted 
 
 Chained hash tables also inherit the disadvantages of linked lists. When storing small keys and values, the space overhead of the next pointer in each entry record can be significant. An additional disadvantage is that traversing a linked list has poor cache performance, making the processor cache ineffective.
 
-* Note: Uses my simplified versions of list and pair, but will work with STL also.
+Notes:
+* Uses my simplified versions of list and pair, but will work with STL also.
+* Based upon code found in "C++ Data Structures and Algorithms", by Wisnu Anggoro, April 26, 2018
