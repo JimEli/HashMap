@@ -1,4 +1,4 @@
-// Hash table with separate chaining via linked-list.
+// hash table with separate chaining via linked-list.
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
@@ -17,8 +17,7 @@ template <typename T>
 class HashTable
 {
 private:
-	//std::list<std::pair<int, T>> tableList[TABLE_SIZE];
-	list<std::pair<int, T>> tableList[TABLE_SIZE];
+	list<pair<int, T>> tableList[TABLE_SIZE];
 
 	int hashFunction(int key) { return key % TABLE_SIZE; }
 
@@ -47,9 +46,8 @@ public:
 		// If key is not found, append at the back.
 		if (!isKeyFound)
 		{
-			//std::pair<int, T> newElement(key, data);
-			//tableList[hashKey].push_back(newElement);
-			tableList[hashKey].emplace_back(key, data);
+			pair<int, T> newElement(key, data);
+			tableList[hashKey].push_back(newElement);
 		}
 	}
 
@@ -77,7 +75,7 @@ public:
 			// If key is found then delete the list's element.
 			if (it->_key == key)
 			{
-				cell.erase(it);
+				cell.remove(*it);
 				break;
 			}
 		}
