@@ -1,4 +1,4 @@
-// hash table with seperate chaining via linked-list.
+// Hash table with separate chaining via linked-list.
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
