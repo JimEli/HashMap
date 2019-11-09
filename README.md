@@ -20,5 +20,5 @@ Chained hash tables also inherit the disadvantages of linked lists. When storing
 Code here incorporates the following hash table functionality: ```insert(int key, T data)```, ```search(int key)```, and ```remove(int key)```.
 
 Notes:
-* Uses my simplified versions of list and pair, but will work with STL also.
+* Uses my simplified versions of list and pair, but works with STL versons also.
 * Based upon code found in "C++ Data Structures and Algorithms", by Wisnu Anggoro, April 26, 2018
