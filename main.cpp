@@ -16,7 +16,7 @@ int main()
 
     cout << (hashTable->isEmpty() ? "Hash table is empty" : "Hash table is not empty") << "\n";
 
-    // Adding a data then check if hash table is empty.
+    // Adding data then check if hash table is empty.
     cout << "Adding data" << endl;
     hashTable->insert(434, "Dylan");
     cout << (hashTable->isEmpty() ? "Hash table is empty" : "Hash table is not empty") << "\n";
@@ -41,7 +41,7 @@ int main()
     else
         cout << "Value for key " << key << " is not found\n";
 
-    // Remove key 669 then search the key,  it should not be found.
+    // Remove key 669 then search for the key,  it should not be found.
     cout << "Remove node of key " << key << endl;
 	hashTable->remove(key);
 	name = hashTable->search(key);
